@@ -2,26 +2,33 @@ version: 2
 
 defaults: &defaults
   working_directory: ~/app
+
+py_defaults: &py_defaults
+  <<: *defaults
   docker:
   - image: python:3.6.3
 
+docker_defaults: &docker_defaults
+  <<: *defaults
+  machine: true
+
 jobs:
   lint:
-    <<: *defaults
+    <<: *py_defaults
     steps:
     - checkout
     - run: |
         pip install -r requirements.txt
         ./lint.sh
   unit_test:
-    <<: *defaults
+    <<: *py_defaults
     steps:
     - checkout
     - run: |
         pip install -r requirements.txt
         ./test.sh
   build:
-    <<: *defaults
+    <<: *docker_defaults
     steps:
     - checkout
     - run: ./build.sh
