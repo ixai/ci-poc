@@ -1,0 +1,38 @@
+version: 2
+
+defaults: &defaults
+  working_directory: ~/app
+  docker:
+  - image: python:3.6.3
+
+jobs:
+  lint:
+    <<: *defaults
+    steps:
+    - checkout
+    - run: |
+        pip install -r requirements.txt
+        ./lint.sh
+  unit_test:
+    <<: *defaults
+    steps:
+    - checkout
+    - run: |
+        pip install -r requirements.txt
+        ./test.sh
+  build:
+    <<: *defaults
+    steps:
+    - checkout
+    - run: ./build.sh
+
+workflows:
+  version: 2
+  continuous_integration:
+    jobs:
+    - lint
+    - unit_test
+    - build:
+        requires:
+        - lint
+        - unit_test
