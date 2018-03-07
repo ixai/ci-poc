@@ -1,0 +1,21 @@
+language: python
+
+sudo: required
+
+services:
+  - docker
+
+matrix:
+  include:
+    - python: 3.6
+      env:
+      - TASK=./lint.sh
+    - python: 3.6
+      env:
+      - TASK=./test.sh
+    - python: 3.6
+      env:
+      - TASK=./build.sh
+
+script:
+- . ${TASK}
